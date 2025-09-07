@@ -1,0 +1,23 @@
+package com.test.tms.repositories;
+
+import com.test.tms.models.Translation;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface TranslationRepo extends JpaRepository<Translation, Long> {
+//    @Query("SELECT t FROM Translation t JOIN t.tags tag " +
+//            "WHERE (:field IS NULL OR t.field = :field) " +
+//            "AND (:locale IS NULL OR t.locale = :locale) " +
+//            "AND (:tag IS NULL OR tag = :tag)")
+//    List<Translation> search(@Param("field") String field,
+//                             @Param("locale") String locale,
+//                             @Param("tag") String tag);
+
+    List<Translation> searchAllByFieldOrContent(String field, String content);
+//    List<Translation> searchAllByFieldOrContentOrTags(String field, String content, String tag);
+}
