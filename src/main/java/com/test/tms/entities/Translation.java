@@ -1,4 +1,4 @@
-package com.test.tms.models;
+package com.test.tms.entities;
 
 import jakarta.persistence.*;
 import lombok.*;

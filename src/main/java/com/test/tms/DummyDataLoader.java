@@ -1,12 +1,5 @@
 package com.test.tms;
 
-import com.test.tms.models.Translation;
-import com.test.tms.repositories.TranslationRepo;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-import java.util.*;
-import java.util.stream.IntStream;
-
 //@Component
 public class DummyDataLoader {
 //        implements CommandLineRunner {

@@ -1,7 +1,7 @@
 package com.test.tms.controllers;
 
 import com.test.tms.Responses.JwtTokenResponse;
-import com.test.tms.models.User;
+import com.test.tms.entities.User;
 import com.test.tms.requests.UserRequest;
 import com.test.tms.services.JwtUtil;
 import com.test.tms.services.UserService;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

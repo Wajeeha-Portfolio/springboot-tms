@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.test.tms.models.User user = userRepo.findUsersByUsername(username);
+        com.test.tms.entities.User user = userRepo.findUsersByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + username);
         }

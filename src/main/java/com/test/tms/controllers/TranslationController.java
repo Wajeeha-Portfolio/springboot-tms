@@ -1,6 +1,6 @@
 package com.test.tms.controllers;
 
-import com.test.tms.models.Translation;
+import com.test.tms.entities.Translation;
 import com.test.tms.requests.TranslationRequest;
 import com.test.tms.services.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;

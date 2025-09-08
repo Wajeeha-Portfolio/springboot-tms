@@ -1,6 +1,6 @@
 package com.test.tms.services;
 
-import com.test.tms.models.User;
+import com.test.tms.entities.User;
 import com.test.tms.repositories.UserRepo;
 import com.test.tms.requests.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
