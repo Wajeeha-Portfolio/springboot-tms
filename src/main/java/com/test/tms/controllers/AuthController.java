@@ -5,6 +5,11 @@ import com.test.tms.models.User;
 import com.test.tms.requests.UserRequest;
 import com.test.tms.services.JwtUtil;
 import com.test.tms.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+
 public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -30,18 +36,25 @@ public class AuthController {
     @Autowired
     UserService userService;
 
+    @Operation(summary = "User login", description = "Authenticates user and returns JWT token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login successful",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = JwtTokenResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials"),
+            @ApiResponse(responseCode = "400", description = "Bad request")
+    })
     @PostMapping("/auth/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody UserRequest authenticationRequest)
-            throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "User login credentials",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = UserRequest.class))
+            )
+            @RequestBody UserRequest authenticationRequest) throws Exception {
 
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
-                    authenticationRequest.getPassword()));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (Exception e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
+                authenticationRequest.getPassword()));
 
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
@@ -50,7 +63,18 @@ public class AuthController {
         return ResponseEntity.ok(new JwtTokenResponse(token));
     }
 
+
     @PostMapping("/auth/register")
+    @Operation(summary = "Register a new user", description = "Creates a new user account with encrypted password")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User registered successfully",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserRequest.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input or user already exists",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserRequest.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     public ResponseEntity<?> registerUser(@RequestBody UserRequest registerRequest) {
         try {
             // Basic validation
