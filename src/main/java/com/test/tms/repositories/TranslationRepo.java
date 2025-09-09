@@ -24,5 +24,7 @@ public interface TranslationRepo extends JpaRepository<Translation, Long> {
     List<Translation> searchByKeyOrContentWithTags(@Param("key") String key,
                                                     @Param("content") String content,
                                                    @Param("tagNames") Set<String> tagNames);
+    List<Translation> findByLocale(String locale);
+    List<Translation> findAll();
 
 }

@@ -1,5 +1,6 @@
 package com.test.tms.services;
 
+import com.test.tms.Responses.ExportResponse;
 import com.test.tms.entities.Translation;
 import com.test.tms.exception.CommonServiceException;
 import com.test.tms.repositories.TranslationRepo;
@@ -77,6 +78,11 @@ public class TranslationService {
             throw new CommonServiceException(HttpStatus.BAD_REQUEST, "At least one search parameter (key, content, or tags) must be provided");
         }
 
+        if (!StringUtils.isEmpty(request.getKey()) && !StringUtils.isEmpty(request.getContent())
+                && !request.getTags().isEmpty()) {
+            return translationRepo.searchByKeyOrContentWithTags(request.getKey(), request.getContent(), request.getTags());
+        }
+
         if (!StringUtils.isEmpty(request.getKey())) {
             return translationRepo.findByKeyContainingIgnoreCase(request.getKey());
         }
@@ -89,11 +95,15 @@ public class TranslationService {
             return translationRepo.findByTagNamesOr(request.getTags());
         }
 
-        if (!StringUtils.isEmpty(request.getKey()) && !StringUtils.isEmpty(request.getContent())
-                && !request.getTags().isEmpty()) {
-            return translationRepo.searchByKeyOrContentWithTags(request.getKey(), request.getContent(), request.getTags());
-        }
-
         return Collections.emptyList();
+    }
+
+    public ExportResponse exportTranslations() {
+        List<Translation> translations = translationRepo.findAll();
+
+        return ExportResponse.builder()
+                .translations(translations)
+                .totalCount(translations.size())
+                .build();
     }
 }

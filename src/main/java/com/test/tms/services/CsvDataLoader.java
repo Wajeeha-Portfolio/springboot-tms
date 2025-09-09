@@ -178,12 +178,7 @@ public class CsvDataLoader {
     }
 
     private void saveBatch(List<Translation> translations) {
-        try {
             repository.saveAll(translations);
             log.info("Saved batch of {} translations", translations.size());
-        } catch (Exception e) {
-            log.error("Error saving batch: {}", e.getMessage());
-            throw e;
-        }
     }
 }

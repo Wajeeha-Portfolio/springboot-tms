@@ -1,5 +1,6 @@
 package com.test.tms.controllers;
 
+import com.test.tms.Responses.ExportResponse;
 import com.test.tms.Responses.SuccessResponse;
 import com.test.tms.entities.Translation;
 import com.test.tms.requests.SearchRequest;
@@ -40,5 +41,11 @@ public class TranslationController {
     @PostMapping("/translation/search")
     public List<Translation> searchTranslations(@RequestBody SearchRequest request) {
         return translationService.searchTranslations(request);
+    }
+
+    @GetMapping("/translation/export")
+    public ResponseEntity<ExportResponse> exportTranslations() {
+        ExportResponse response = translationService.exportTranslations();
+        return ResponseEntity.ok(response);
     }
 }
