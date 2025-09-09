@@ -4,7 +4,6 @@ import com.test.tms.entities.Translation;
 import com.test.tms.exception.CommonServiceException;
 import com.test.tms.repositories.TranslationRepo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,8 +21,11 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class CsvDataLoader {
-    @Autowired
-    private TranslationRepo repository;
+    private final TranslationRepo repository;
+
+    public CsvDataLoader(TranslationRepo repository) {
+        this.repository = repository;
+    }
 
     public String generateSampleCsv(int recordCount) {
 

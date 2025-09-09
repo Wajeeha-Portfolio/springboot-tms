@@ -1,6 +1,7 @@
 package com.test.tms.services;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -82,12 +83,11 @@ class JwtUtilTest {
     void validateToken_expiredToken() throws Exception {
         UserDetails userDetails = Mockito.mock(UserDetails.class);
         Mockito.when(userDetails.getUsername()).thenReturn("testuser");
-        // Set expiration to -1 second (already expired)
         java.lang.reflect.Field expField = JwtUtil.class.getDeclaredField("jwtExpiration");
         expField.setAccessible(true);
-        expField.set(jwtUtil, -1);
+        expField.set(jwtUtil, 2); // 2 second for quick expiration
         String token = jwtUtil.generateToken(userDetails);
-        assertFalse(jwtUtil.validateToken(token, userDetails));
+        Thread.sleep(5000); // Wait for 3 seconds to ensure token is expired
+        assertThrows(ExpiredJwtException.class, () -> jwtUtil.validateToken(token, userDetails));
     }
 }
-

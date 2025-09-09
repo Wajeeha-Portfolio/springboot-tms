@@ -18,10 +18,10 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
     @Value("${jwt.token.secret}")
-    private String SECRET; // In production, use a secure key
+    private String SECRET;
 
     @Value("${jwt.token.expiration}")
-    private int jwtExpiration; // 24 hours
+    private int jwtExpiration; // 1 hours
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

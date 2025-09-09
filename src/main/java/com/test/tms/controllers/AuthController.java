@@ -9,17 +9,18 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-
 public class AuthController {
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @Operation(summary = "User login", description = "Authenticates user and returns JWT token")
     @ApiResponses(value = {
@@ -34,7 +35,6 @@ public class AuthController {
         String token = userService.loginAttempt(authenticationRequest);
         return ResponseEntity.ok(new JwtTokenResponse(token));
     }
-
 
     @PostMapping("/auth/register")
     @Operation(summary = "Register a new user", description = "Creates a new user account with encrypted password")

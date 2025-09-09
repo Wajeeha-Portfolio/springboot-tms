@@ -8,7 +8,6 @@ import com.test.tms.requests.SearchRequest;
 import com.test.tms.requests.TranslationRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +18,12 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-
 public class TranslationService {
-    @Autowired
-    TranslationRepo translationRepo;
+    private final TranslationRepo translationRepo;
+
+    public TranslationService(TranslationRepo translationRepo) {
+        this.translationRepo = translationRepo;
+    }
 
     public Long addTranslation(TranslationRequest request) {
         // Validate input
