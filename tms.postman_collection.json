@@ -1,0 +1,499 @@
+{
+	"info": {
+		"_postman_id": "843c8162-ee75-4448-8730-a58d2db47385",
+		"name": "tms",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9108846"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"test\",\r\n    \"password\": \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tms/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tms",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"test\",\r\n    \"password\": \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tms/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tms",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Invalid Credientials",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"test1\",\r\n    \"password\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tms/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tms",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Generate Sample Data",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzU3NDUwMjIwLCJleHAiOjE3NTc0NTM4MjB9.Q6qfsyyt1yJB9jyF-MG2dW5mPGdUsNTdNUMvJW_5p1w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/tms/sample-csv?count=1000",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tms",
+						"sample-csv"
+					],
+					"query": [
+						{
+							"key": "count",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Import Test Data",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzU3NDUwMjIwLCJleHAiOjE3NTc0NTM4MjB9.Q6qfsyyt1yJB9jyF-MG2dW5mPGdUsNTdNUMvJW_5p1w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/Wajeeha/Desktop/repos/springboot-tms/sample-translations-1757448849632.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/tms/csv",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tms",
+						"csv"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "File is empty",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/tms/csv",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tms",
+								"csv"
+							]
+						}
+					},
+					"_postman_previewlanguage": "",
+					"header": [],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"domain": "",
+							"path": ""
+						}
+					],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get Translation By Id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzU3NDQ2MTcxLCJleHAiOjE3NTc0NDk3NzF9.m-jxMsDDmVYRkOFcUxiUyG7bw0ZIKGOAyJfhahrlt_A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/tms/translation/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tms",
+						"translation",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Translation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzU3NDQ2MTcxLCJleHAiOjE3NTc0NDk3NzF9.m-jxMsDDmVYRkOFcUxiUyG7bw0ZIKGOAyJfhahrlt_A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"key\": \"auth.login.button\",\r\n  \"content\": \"Se connecter\",\r\n  \"locale\": \"fn\",\r\n  \"tags\": [\r\n        \"mobile\",\"web\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tms/translation",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tms",
+						"translation"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Invalid input",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"key\": \"auth.login.button\",\r\n  \"content\": \"Se connecter\",\r\n  \"locale\": \"fn\",\r\n  \"tags\": [\r\n        \"mobile\",\"web\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tms/translation",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tms",
+								"translation"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Update Translation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzU3NDQ2MTcxLCJleHAiOjE3NTc0NDk3NzF9.m-jxMsDDmVYRkOFcUxiUyG7bw0ZIKGOAyJfhahrlt_A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"key\": \"auth.login.button\",\r\n  \"content\": \"Se connecter\",\r\n  \"locale\": \"fn\",\r\n  \"tags\": [\r\n        \"mobile\",\"web\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tms/translation/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tms",
+						"translation",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Invalid input",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"key\": \"auth.login.button\",\r\n  \"content\": \"Se connecter\",\r\n  \"locale\": \"\",\r\n  \"tags\": [\r\n        \"mobile\",\"web\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tms/translation/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tms",
+								"translation",
+								"1"
+							]
+						}
+					},
+					"_postman_previewlanguage": "",
+					"header": [],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"domain": "",
+							"path": ""
+						}
+					],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Search Translation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzU3NDQ2MTcxLCJleHAiOjE3NTc0NDk3NzF9.m-jxMsDDmVYRkOFcUxiUyG7bw0ZIKGOAyJfhahrlt_A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"key\": \"\",\r\n    \"content\": \"\",\r\n    \"tags\": [\"desktop\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/tms/translation/search",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tms",
+						"translation",
+						"search"
+					],
+					"query": [
+						{
+							"key": "content",
+							"value": "test",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Export Translations",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNzU3NDUwMjIwLCJleHAiOjE3NTc0NTM4MjB9.Q6qfsyyt1yJB9jyF-MG2dW5mPGdUsNTdNUMvJW_5p1w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/tms/translation/export",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tms",
+						"translation",
+						"export"
+					],
+					"query": [
+						{
+							"key": "content",
+							"value": "test",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
