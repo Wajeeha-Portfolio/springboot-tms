@@ -15,9 +15,9 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("JWT Authentication API")
+                        .title("Translation Management Service API")
                         .version("1.0")
-                        .description("Spring Boot JWT Authentication API with user registration and login")
+                        .description("Translation Management Service API")
                         )
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components()

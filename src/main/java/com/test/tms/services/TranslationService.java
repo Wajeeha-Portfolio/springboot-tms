@@ -11,10 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -105,9 +103,19 @@ public class TranslationService {
     public ExportResponse exportTranslations() {
         List<Translation> translations = translationRepo.findAll();
 
+        Map<String, Map<String, String>> data = translations.stream()
+                .collect(Collectors.groupingBy(
+                        Translation::getLocale,
+                        Collectors.toMap(
+                                Translation::getKey,
+                                translation -> translation.getContent() != null ? translation.getContent() : "",
+                                (existing, replacement) -> replacement
+                        )
+                ));
         return ExportResponse.builder()
-                .translations(translations)
+                .translations(data)
                 .totalCount(translations.size())
                 .build();
     }
 }
+

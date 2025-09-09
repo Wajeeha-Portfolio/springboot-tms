@@ -1,6 +1,7 @@
 package com.test.tms.controllers;
 
 import com.test.tms.Responses.JwtTokenResponse;
+import com.test.tms.Responses.SuccessResponse;
 import com.test.tms.entities.User;
 import com.test.tms.requests.UserRequest;
 import com.test.tms.services.UserService;
@@ -49,6 +50,6 @@ public class AuthController {
     })
     public ResponseEntity<?> registerUser(@RequestBody UserRequest registerRequest) {
         User user = userService.registerUser(registerRequest);
-        return ResponseEntity.ok("User registered successfully with username: " + user.getUsername());
+        return ResponseEntity.ok(new SuccessResponse("User registered successfully with username: " + user.getUsername()));
     }
 }
