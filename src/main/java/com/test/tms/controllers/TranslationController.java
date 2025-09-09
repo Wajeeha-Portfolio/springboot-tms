@@ -1,6 +1,8 @@
 package com.test.tms.controllers;
 
+import com.test.tms.Responses.SuccessResponse;
 import com.test.tms.entities.Translation;
+import com.test.tms.requests.SearchRequest;
 import com.test.tms.requests.TranslationRequest;
 import com.test.tms.services.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,8 @@ public class TranslationController {
 
     @PostMapping("/translation")
     public ResponseEntity<?> addTranslation(@RequestBody TranslationRequest request) {
-        translationService.addTranslation(request);
-        return ResponseEntity.ok().build();
+        Long id = translationService.addTranslation(request);
+        return ResponseEntity.ok(new SuccessResponse("Translation added successfully with ID: " + id));
     }
 
     // Update translation
@@ -25,7 +27,7 @@ public class TranslationController {
     public ResponseEntity<?> updateTranslation(@PathVariable(required = true) Long id,
                                                @RequestBody TranslationRequest request) {
         translationService.updateTranslation(id, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new SuccessResponse("Translation updated successfully"));
     }
 
      // View translation by ID
@@ -35,11 +37,8 @@ public class TranslationController {
     }
 
     // Search translations by key, lang, or context
-    @GetMapping("/translation/search")
-    public List<Translation> searchTranslations(@RequestParam(required = false) String key,
-                                                @RequestParam(required = false) String lang,
-                                                @RequestParam(required = false) String locale) {
-        return translationService.searchTranslations(key, lang, locale);
-
+    @PostMapping("/translation/search")
+    public List<Translation> searchTranslations(@RequestBody SearchRequest request) {
+        return translationService.searchTranslations(request);
     }
 }

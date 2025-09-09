@@ -27,6 +27,11 @@ public class Translation {
     @Column(nullable = false)
     private String locale;
 
-    @Column(nullable = false)
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "translation_tags",
+            joinColumns = @JoinColumn(name = "translation_id")
+    )
+    @Column(name = "tag")
     private Set<String> tags;
 }

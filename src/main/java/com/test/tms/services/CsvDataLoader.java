@@ -1,9 +1,12 @@
 package com.test.tms.services;
 
 import com.test.tms.entities.Translation;
+import com.test.tms.exception.CommonServiceException;
 import com.test.tms.repositories.TranslationRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,14 +25,21 @@ public class CsvDataLoader {
     @Autowired
     private TranslationRepo repository;
 
-    public void generateSampleCsv(String filePath, int recordCount) throws IOException {
+    public String generateSampleCsv(int recordCount) {
+
+        if (recordCount > 100000) {
+            log.error("Requested record count {} exceeds maximum limit", recordCount);
+            throw new CommonServiceException(HttpStatus.BAD_REQUEST, "Record count too large. Max is 100000");
+        }
+
+        String filename = "sample-translations-" + System.currentTimeMillis() + ".csv";
 
         String[] locales = {"en", "fr", "es", "de", "it"};
         String[] keyPrefixes = {"app", "page", "component", "error", "message"};
         String[] keySuffixes = {"title", "description", "button", "label", "error"};
         String[] tags = {"web", "mobile", "desktop", "api"};
 
-        try (FileWriter writer = new FileWriter(filePath)) {
+        try (FileWriter writer = new FileWriter(filename)) {
             // Write header
             writer.write("key,locale,content,tags\n");
 
@@ -52,19 +62,36 @@ public class CsvDataLoader {
                 writer.write(String.format("\"%s\",\"%s\",\"%s\",\"%s\"\n",
                         key, locale, content, tagsStr));
             }
+            log.info("Sample CSV file generated: {}", filename);
+            return filename;
+        } catch (IOException e) {
+            log.error("Error generating sample CSV file", e);
+            throw new  CommonServiceException(HttpStatus.INTERNAL_SERVER_ERROR, "Error generating sample CSV file");
         }
-
-        System.console().format("Sample CSV file generated: {}", filePath);
     }
 
     @Transactional
-    public void loadFromMultipartFile(MultipartFile file) throws IOException, CsvException {
+    public void loadFromMultipartFile(MultipartFile file) {
+        if (file.isEmpty()) {
+            log.error("File is empty");
+            throw  new CommonServiceException(HttpStatus.BAD_REQUEST, "File is empty");
+        }
+
+        if (!file.getOriginalFilename().toLowerCase().endsWith(".csv")) {
+            log.error("File is not a CSV file");
+            throw   new CommonServiceException(HttpStatus.BAD_REQUEST, "File is not a CSV file");
+        }
+
         log.info("Loading translations from uploaded CSV file: {}", file.getOriginalFilename());
 
         try (InputStreamReader inputStreamReader = new InputStreamReader(file.getInputStream());
              CSVReader csvReader = new CSVReader(inputStreamReader)) {
-
             loadFromCsvReader(csvReader);
+        }
+
+        catch (Exception e) {
+            log.error("Error loading CSV file", e);
+            throw new CommonServiceException(HttpStatus.INTERNAL_SERVER_ERROR, "Error loading CSV file: " + e.getMessage());
         }
     }
 
