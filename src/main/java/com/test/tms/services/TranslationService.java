@@ -2,47 +2,54 @@ package com.test.tms.services;
 
 import com.test.tms.entities.Translation;
 import com.test.tms.repositories.TranslationRepo;
+import com.test.tms.requests.TranslationRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
+@Slf4j
+
 public class TranslationService {
     @Autowired
     TranslationRepo translationRepo;
 
-    public void addTranslation(String field, String content, String locale, String tags) {
+    public void addTranslation(TranslationRequest request) {
         // Implementation to add translation
-        if (StringUtils.isEmpty(field) || StringUtils.isEmpty(content) || StringUtils.isEmpty(locale)
-                || StringUtils.isEmpty(tags)) {
-//            System.console().print("Key, content, locale, and tags must not be empty");
+        if (StringUtils.isEmpty(request.getKey()) || StringUtils.isEmpty(request.getContent()) || StringUtils.isEmpty(request.getLocale())
+                || request.getTags().isEmpty()) {
+            log.error("Key, content, locale, and tags must not be empty");
             throw new IllegalArgumentException("Invalid input");
         }
 
-        Translation t = Translation.builder().field(field).content(content).locale(locale)
-                .tags(Arrays.asList(tags.split(","))).build();
-        translationRepo.save(t);
+        Translation translation = Translation.builder()
+                .key(request.getKey())
+                .locale(request.getLocale())
+                .content(request.getContent())
+                .tags(request.getTags() != null ? request.getTags() : new HashSet<>())
+                .build();
+        translationRepo.save(translation);
     }
 
     public void loadData() {
 
     }
 
-    public void updateTranslation(Long id, String key, String value, String lang, String context) {
-        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(value) || StringUtils.isEmpty(lang) || StringUtils.isEmpty(context)) {
+    public void updateTranslation(Long id, TranslationRequest request) {
+        if (StringUtils.isEmpty(request.getKey()) || StringUtils.isEmpty(request.getContent())
+                || StringUtils.isEmpty(request.getLocale()) || request.getTags().isEmpty()) {
             throw new IllegalArgumentException("Invalid input");
         }
         Optional<Translation> opt = translationRepo.findById(id);
         if (opt.isPresent()) {
             Translation t = opt.get();
-            t.setField(key);
-            t.setContent(value);
-            t.setLocale(lang);
-            t.setTags(Arrays.asList(context));
+            t.setKey(request.getKey());
+            t.setContent(request.getContent());
+            t.setLocale(request.getLocale());
+            t.setTags(request.getTags());
             translationRepo.save(t);
         } else {
             throw new IllegalArgumentException("Translation not found");
@@ -54,7 +61,7 @@ public class TranslationService {
         return opt.orElse(null);
     }
 
-    public List<Translation> searchTranslations(String field, String content, String tag) {
-        return translationRepo.searchAllByFieldOrContent(field, content);
+    public List<Translation> searchTranslations(String key, String content, String tag) {
+        return translationRepo.searchAllByKeyOrContent(key, content);
     }
 }

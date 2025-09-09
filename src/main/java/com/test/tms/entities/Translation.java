@@ -3,7 +3,7 @@ package com.test.tms.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -18,8 +18,8 @@ public class Translation {
     @Column(nullable = false)
     private Long id;
 
-    @Column(nullable = false)
-    private String field;
+    @Column(nullable = false, name = "translation_key")
+    private String key;
 
     @Column(nullable = false)
     private String content;
@@ -28,5 +28,5 @@ public class Translation {
     private String locale;
 
     @Column(nullable = false)
-    private List<String> tags;
+    private Set<String> tags;
 }

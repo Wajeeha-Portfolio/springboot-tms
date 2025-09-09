@@ -16,8 +16,7 @@ public class TranslationController {
 
     @PostMapping("/translation")
     public ResponseEntity<?> addTranslation(@RequestBody TranslationRequest request) {
-        translationService.addTranslation(request.getField(), request.getContent(), request.getLocale(),
-                request.getTags());
+        translationService.addTranslation(request);
         return ResponseEntity.ok().build();
     }
 
@@ -25,8 +24,7 @@ public class TranslationController {
     @PutMapping("/translation/{id}")
     public ResponseEntity<?> updateTranslation(@PathVariable(required = true) Long id,
                                                @RequestBody TranslationRequest request) {
-        translationService.updateTranslation(id, request.getField(), request.getContent(), request.getLocale(),
-                request.getTags());
+        translationService.updateTranslation(id, request);
         return ResponseEntity.ok().build();
     }
 
@@ -38,10 +36,10 @@ public class TranslationController {
 
     // Search translations by key, lang, or context
     @GetMapping("/translation/search")
-    public List<Translation> searchTranslations(@RequestParam(required = false) String field,
+    public List<Translation> searchTranslations(@RequestParam(required = false) String key,
                                                 @RequestParam(required = false) String lang,
                                                 @RequestParam(required = false) String locale) {
-        return translationService.searchTranslations(field, lang, locale);
+        return translationService.searchTranslations(key, lang, locale);
 
     }
 }
