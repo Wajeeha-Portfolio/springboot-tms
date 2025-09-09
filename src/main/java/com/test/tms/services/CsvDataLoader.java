@@ -99,13 +99,11 @@ public class CsvDataLoader {
         List<String[]> records = csvReader.readAll();
 
         if (records.isEmpty()) {
-            System.console().format("CSV file is empty");
+            log.error("CSV file is empty");
             return;
         }
 
-        // Validate header
         String[] header = records.get(0);
-//        validateHeader(header);
 
         // Process data rows
         List<Translation> translations = new ArrayList<>();
